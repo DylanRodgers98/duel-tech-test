@@ -5,14 +5,14 @@ import { randomUUID } from "crypto";
 
 const primaryKey = "user_id";
 
-const client = new MeiliSearch({
+const meilisearch = new MeiliSearch({
   host: "http://localhost:7700",
   apiKey: "aSampleMasterKey",
 });
 
 const indexFiles = async (paths: string[]) => {
-  const failedFiles: string[] = [];
-  const files: any[] = [];
+  const files: unknown[] = [];
+  const failedFilePaths: string[] = [];
 
   for (const path of paths) {
     try {
@@ -21,19 +21,20 @@ const indexFiles = async (paths: string[]) => {
       contents[primaryKey] ??= randomUUID();
       files.push(contents);
     } catch (err) {
-      failedFiles.push(path);
+      console.error(`${path}:`, err);
+      failedFilePaths.push(path);
     }
   }
 
-  console.log(`num failed files: ${failedFiles.length}`);
+  if (failedFilePaths.length) {
+    console.log(`failed to load ${failedFilePaths.length} files`);
+  }
+
   console.log(`indexing ${files.length} users`);
-  client
-    .index("users")
-    .addDocuments(files, { primaryKey })
-    .then((res) => console.log(res));
+  await meilisearch.index("users").addDocuments(files, { primaryKey });
 };
 
-async function getFilesInDirectory(dir: string): Promise<void> {
+async function indexFilesInDirectory(dir: string): Promise<void> {
   const dirents = await fs.readdir(dir, { withFileTypes: true });
   const paths = dirents
     .filter((dirent) => dirent.isFile())
@@ -42,5 +43,4 @@ async function getFilesInDirectory(dir: string): Promise<void> {
   await indexFiles(paths);
 }
 
-// Example usage:
-getFilesInDirectory("./data");
+indexFilesInDirectory("./data");
