@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { usersRouter } from "./users/index.js";
+import { advocatesRouter } from "./advocates/index.js";
 
 const router = Router();
 
-router.use("/users", usersRouter);
+router.use("/advocates", advocatesRouter);
 
 export const api = router;

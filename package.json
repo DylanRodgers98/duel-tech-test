@@ -6,7 +6,7 @@
   "author": "Dylan Rodgers <dylanirodgers@aol.com>",
   "license": "MIT",
   "scripts": {
-    "index-users": "npx tsx src/index.ts",
+    "index-advocates": "npx tsx src/index.ts",
     "start": "npx tsx src/server.ts"
   },
   "devDependencies": {

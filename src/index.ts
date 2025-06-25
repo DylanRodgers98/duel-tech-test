@@ -25,17 +25,17 @@ const indexFiles = async (paths: string[]) => {
     console.log(`failed to load ${failedFilePaths.length} files`);
   }
 
-  console.log("setting up users index");
-  const usersIndex = meilisearch.index("users");
-  await usersIndex.deleteAllDocuments();
-  await usersIndex.updateSortableAttributes(["joined_at"]);
-  await usersIndex.updateFilterableAttributes([
+  console.log("setting up advocates index");
+  const advocatesIndex = meilisearch.index("advocates");
+  await advocatesIndex.deleteAllDocuments();
+  await advocatesIndex.updateSortableAttributes(["joined_at"]);
+  await advocatesIndex.updateFilterableAttributes([
     "joined_at",
     "advocacy_programs",
   ]);
 
-  console.log(`indexing ${files.length} users`);
-  await usersIndex.addDocuments(files, { primaryKey });
+  console.log(`indexing ${files.length} advocates`);
+  await advocatesIndex.addDocuments(files, { primaryKey });
 };
 
 async function indexFilesInDirectory(dir: string): Promise<void> {
