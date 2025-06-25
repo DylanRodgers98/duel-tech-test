@@ -1,17 +1,12 @@
+import { randomUUID } from "crypto";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { MeiliSearch } from "meilisearch";
-import { randomUUID } from "crypto";
+import { meilisearch } from "./services/meilisearch.js";
 
 const primaryKey = "user_id";
 
-const meilisearch = new MeiliSearch({
-  host: "http://localhost:7700",
-  apiKey: "aSampleMasterKey",
-});
-
 const indexFiles = async (paths: string[]) => {
-  const files: unknown[] = [];
+  const files: any[] = [];
   const failedFilePaths: string[] = [];
 
   for (const path of paths) {
@@ -30,8 +25,17 @@ const indexFiles = async (paths: string[]) => {
     console.log(`failed to load ${failedFilePaths.length} files`);
   }
 
+  console.log("setting up users index");
+  const usersIndex = meilisearch.index("users");
+  await usersIndex.deleteAllDocuments();
+  await usersIndex.updateSortableAttributes(["joined_at"]);
+  await usersIndex.updateFilterableAttributes([
+    "joined_at",
+    "advocacy_programs",
+  ]);
+
   console.log(`indexing ${files.length} users`);
-  await meilisearch.index("users").addDocuments(files, { primaryKey });
+  await usersIndex.addDocuments(files, { primaryKey });
 };
 
 async function indexFilesInDirectory(dir: string): Promise<void> {

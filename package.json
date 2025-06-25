@@ -2,17 +2,21 @@
   "name": "duel-tech",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "author": "Dylan Rodgers <dylanirodgers@aol.com>",
   "license": "MIT",
   "scripts": {
-    "start": "npx tsx src/index.ts"
+    "index-users": "npx tsx src/index.ts",
+    "start": "npx tsx src/server.ts"
   },
   "devDependencies": {
     "@tsconfig/node-lts": "^22.0.2",
+    "@types/express": "^5.0.3",
     "@types/node": "^24.0.4",
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "express": "^5.1.0",
     "meilisearch": "^0.51.0"
   }
 }
