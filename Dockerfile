@@ -15,6 +15,7 @@ FROM base AS build
 WORKDIR /app
 COPY tsconfig.json tsconfig.json
 COPY src ./src
+COPY data ./data
 RUN yarn build
 
 # Combine production only dependencies with built project
@@ -22,6 +23,7 @@ FROM node:lts-alpine AS final
 WORKDIR /app
 COPY --from=deps app/node_modules ./node_modules
 COPY --from=build app/build ./build
+COPY --from=build app/data ./data
 COPY --from=build app/package.json package.json
 ENV NODE_ENV=production
 CMD ["yarn", "start"]

@@ -27,26 +27,21 @@ const indexFiles = async (paths: string[]) => {
     console.log(`failed to load ${failedFilePaths.length} files`);
   }
 
-  console.log('setting up advocates index');
+  console.log(`indexing ${advocates.length} advocates`);
   const advocatesIndex = meilisearch.index('advocates');
-  await advocatesIndex.deleteAllDocuments();
+  await advocatesIndex.addDocuments(advocates, { primaryKey });
   await advocatesIndex.updateSortableAttributes(['joined_at']);
   await advocatesIndex.updateFilterableAttributes([
     'joined_at',
     'advocacy_programs',
   ]);
-
-  console.log(`indexing ${advocates.length} advocates`);
-  await advocatesIndex.addDocuments(advocates, { primaryKey });
 };
 
-async function indexFilesInDirectory(dir: string): Promise<void> {
+export const indexFilesInDirectory = async (dir: string): Promise<void> => {
   const dirents = await fs.readdir(dir, { withFileTypes: true });
   const paths = dirents
     .filter((dirent) => dirent.isFile())
     .map((dirent) => path.join(dir, dirent.name));
 
   await indexFiles(paths);
-}
-
-indexFilesInDirectory('./data');
+};

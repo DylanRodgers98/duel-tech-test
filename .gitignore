@@ -1,6 +1,7 @@
-node_modules
+.DS_STORE
+build
 data.ms
 dumps
-.DS_STORE
+meili_data
 meilisearch
-build
+node_modules
