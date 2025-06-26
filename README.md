@@ -13,3 +13,53 @@ The repo is packaged with a Docker Compose file, simply run:
 ```sh
 docker compose up
 ```
+
+## Routes
+
+### Get list of advocates (paginated)
+
+```
+GET http://localhost:3000/api/advocates
+
+Query params:
+- filter?: string
+- limit?: number // default 20
+- offset?: number // default 0
+
+Example: GET http://localhost:3000/api/advocates/search?filter=instagram_handle%3DDylanRodgers98
+Example: GET http://localhost:3000/api/advocates/search?limit=10&offset=40
+```
+
+### Search advocates
+
+```
+GET http://localhost:3000/api/advocates/search
+
+Query params:
+- query: string
+- sort?: string
+
+Example: GET http://localhost:3000/api/advocates/search?query=dylan&sort=joined_at:asc
+```
+
+### Get engagement metrics for an advocate
+
+```
+GET http://localhost:3000/api/metrics/engagement/advocate/:advocateId
+
+Example: GET http://localhost:3000/api/metrics/engagement/advocate/9c548567-ae6c-48ce-8fe8-da336b65440e
+```
+
+### Get engagement metrics for a platform
+
+```
+GET http://localhost:3000/api/metrics/engagement/platform/:platformId
+
+Example: GET http://localhost:3000/api/metrics/engagement/platform/instagram
+```
+
+### Get engagement metrics for all platforms
+
+```
+GET http://localhost:3000/api/metrics/engagement/platform
+```

@@ -3,13 +3,13 @@ import { meilisearch } from '../../../services/meilisearch.js';
 import { Advocate } from '../../../domain/advocate.js';
 import { Engagement } from '../../../domain/engagement.js';
 
-export const getEngagementForUser = async (
-  req: Request<{ userId: string }>,
+export const getEngagementForAdvocate = async (
+  req: Request<{ advocateId: string }>,
   res: Response,
 ) => {
   const result = await meilisearch
     .index('advocates')
-    .getDocument<Advocate>(req.params.userId, {
+    .getDocument<Advocate>(req.params.advocateId, {
       fields: ['advocacy_programs'],
     });
 
