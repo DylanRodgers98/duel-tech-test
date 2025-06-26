@@ -1,0 +1,14 @@
+services:
+  web:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - MEILISEARCH_HOST=http://meilisearch:7700
+      - MEILISEARCH_API_KEY=aSampleMasterKey # usually would not expose this here, is just for sake of running project
+  meilisearch:
+    image: 'getmeili/meilisearch:v1.15'
+    ports:
+      - '7700:7700'
+    volumes:
+      - ./meili_data:/meili_data

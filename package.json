@@ -7,8 +7,10 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "index-advocates": "npx tsx src/index.ts",
-    "start": "npx tsx src/server.ts",
+    "seed:dev": "npx tsx src/seed.ts",
+    "seed": "node build/seed.js",
+    "start:dev": "npx tsx src/server.ts",
+    "start": "node build/server.js",
     "lint": "npx eslint src"
   },
   "devDependencies": {
