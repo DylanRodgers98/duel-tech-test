@@ -1,10 +1,10 @@
-import { promises as fs } from "fs";
-import * as path from "path";
-import { meilisearch } from "./services/meilisearch.js";
-import { advocateSchema } from "./domain/advocate.js";
-import { ZodError, z } from "zod/v4";
+import { promises as fs } from 'fs';
+import * as path from 'path';
+import { meilisearch } from './services/meilisearch.js';
+import { advocateSchema } from './domain/advocate.js';
+import { ZodError, z } from 'zod/v4';
 
-const primaryKey = "user_id";
+const primaryKey = 'user_id';
 
 const indexFiles = async (paths: string[]) => {
   const files: any[] = [];
@@ -27,13 +27,13 @@ const indexFiles = async (paths: string[]) => {
     console.log(`failed to load ${failedFilePaths.length} files`);
   }
 
-  console.log("setting up advocates index");
-  const advocatesIndex = meilisearch.index("advocates");
+  console.log('setting up advocates index');
+  const advocatesIndex = meilisearch.index('advocates');
   await advocatesIndex.deleteAllDocuments();
-  await advocatesIndex.updateSortableAttributes(["joined_at"]);
+  await advocatesIndex.updateSortableAttributes(['joined_at']);
   await advocatesIndex.updateFilterableAttributes([
-    "joined_at",
-    "advocacy_programs",
+    'joined_at',
+    'advocacy_programs',
   ]);
 
   console.log(`indexing ${files.length} advocates`);
@@ -49,4 +49,4 @@ async function indexFilesInDirectory(dir: string): Promise<void> {
   await indexFiles(paths);
 }
 
-indexFilesInDirectory("./data");
+indexFilesInDirectory('./data');

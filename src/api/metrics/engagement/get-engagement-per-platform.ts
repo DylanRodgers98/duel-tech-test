@@ -1,13 +1,13 @@
-import { Request, Response } from "express";
-import { meilisearch } from "../../../services/meilisearch.js";
-import { Advocate } from "../../../domain/advocate.js";
-import { Engagement } from "../../../domain/engagement.js";
+import { Request, Response } from 'express';
+import { meilisearch } from '../../../services/meilisearch.js';
+import { Advocate } from '../../../domain/advocate.js';
+import { Engagement } from '../../../domain/engagement.js';
 
 const getAllPlatforms = async (): Promise<string[]> => {
   const { facetHits } = await meilisearch
-    .index("advocates")
+    .index('advocates')
     .searchForFacetValues({
-      facetName: "advocacy_programs.tasks_completed.platform",
+      facetName: 'advocacy_programs.tasks_completed.platform',
     });
 
   return facetHits.map((hit) => hit.value);
@@ -15,7 +15,7 @@ const getAllPlatforms = async (): Promise<string[]> => {
 
 export const getEngagementPerPlatform = async (
   req: Request<{ platform?: string }>,
-  res: Response
+  res: Response,
 ) => {
   const platforms: string[] = [];
   if (req.params.platform) {
@@ -28,9 +28,9 @@ export const getEngagementPerPlatform = async (
   const map = new Map<string, Engagement>();
   for (const platform of platforms) {
     const { results } = await meilisearch
-      .index("advocates")
+      .index('advocates')
       .getDocuments<Advocate>({
-        fields: ["advocacy_programs"],
+        fields: ['advocacy_programs'],
         filter: `advocacy_programs.tasks_completed.platform = ${platform}`,
       });
 

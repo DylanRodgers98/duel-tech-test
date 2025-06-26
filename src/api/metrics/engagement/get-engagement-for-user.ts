@@ -1,16 +1,16 @@
-import { Request, Response } from "express";
-import { meilisearch } from "../../../services/meilisearch.js";
-import { Advocate } from "../../../domain/advocate.js";
-import { Engagement } from "../../../domain/engagement.js";
+import { Request, Response } from 'express';
+import { meilisearch } from '../../../services/meilisearch.js';
+import { Advocate } from '../../../domain/advocate.js';
+import { Engagement } from '../../../domain/engagement.js';
 
 export const getEngagementForUser = async (
   req: Request<{ userId: string }>,
-  res: Response
+  res: Response,
 ) => {
   const result = await meilisearch
-    .index("advocates")
+    .index('advocates')
     .getDocument<Advocate>(req.params.userId, {
-      fields: ["advocacy_programs"],
+      fields: ['advocacy_programs'],
     });
 
   const engagement: Engagement = {
