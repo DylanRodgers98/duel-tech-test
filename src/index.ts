@@ -1,13 +1,13 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { meilisearch } from './services/meilisearch.js';
-import { advocateSchema } from './domain/advocate.js';
+import { Advocate, advocateSchema } from './domain/advocate.js';
 import { ZodError, z } from 'zod/v4';
 
 const primaryKey = 'user_id';
 
 const indexFiles = async (paths: string[]) => {
-  const files: any[] = [];
+  const advocates: Advocate[] = [];
   const failedFilePaths: string[] = [];
 
   for (const path of paths) {
@@ -15,7 +15,7 @@ const indexFiles = async (paths: string[]) => {
       const file = await fs.readFile(path);
       const contents = JSON.parse(file.toString());
       const advocate = advocateSchema.parse(contents);
-      files.push(advocate);
+      advocates.push(advocate);
     } catch (err) {
       const error = err instanceof ZodError ? z.prettifyError(err) : err;
       console.error(`${path}:\n${error}\n`);
@@ -36,8 +36,8 @@ const indexFiles = async (paths: string[]) => {
     'advocacy_programs',
   ]);
 
-  console.log(`indexing ${files.length} advocates`);
-  await advocatesIndex.addDocuments(files, { primaryKey });
+  console.log(`indexing ${advocates.length} advocates`);
+  await advocatesIndex.addDocuments(advocates, { primaryKey });
 };
 
 async function indexFilesInDirectory(dir: string): Promise<void> {
