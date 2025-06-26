@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "express": "^5.1.0",
-    "meilisearch": "^0.51.0"
+    "meilisearch": "^0.51.0",
+    "zod": "^3.25.67"
   }
 }

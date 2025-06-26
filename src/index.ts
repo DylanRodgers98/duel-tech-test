@@ -1,7 +1,8 @@
-import { randomUUID } from "crypto";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { meilisearch } from "./services/meilisearch.js";
+import { advocateSchema } from "./domain/advocate.js";
+import { ZodError, z } from "zod/v4";
 
 const primaryKey = "user_id";
 
@@ -13,10 +14,11 @@ const indexFiles = async (paths: string[]) => {
     try {
       const file = await fs.readFile(path);
       const contents = JSON.parse(file.toString());
-      contents[primaryKey] ??= randomUUID();
-      files.push(contents);
+      const advocate = advocateSchema.parse(contents);
+      files.push(advocate);
     } catch (err) {
-      console.error(`${path}:`, err);
+      const error = err instanceof ZodError ? z.prettifyError(err) : err;
+      console.error(`${path}:\n${error}\n`);
       failedFilePaths.push(path);
     }
   }

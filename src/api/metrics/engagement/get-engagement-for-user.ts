@@ -21,27 +21,14 @@ export const getEngagementForUser = async (
     totalSalesAttributed: 0,
   };
 
-  const normalizeNumber = (num: number | string | null): number => {
-    if (num === null) {
-      return 0;
-    }
-    const normalized = Number(num);
-    if (Number.isNaN(normalized)) {
-      return 0;
-    }
-    return normalized;
-  };
-
   result.advocacy_programs.forEach((advocacyProgram) => {
     advocacyProgram.tasks_completed.forEach((task) => {
-      engagement.likes += normalizeNumber(task.likes);
-      engagement.comments += normalizeNumber(task.comments);
-      engagement.shares += normalizeNumber(task.shares);
-      engagement.reach += normalizeNumber(task.reach);
+      engagement.likes += task.likes;
+      engagement.comments += task.comments;
+      engagement.shares += task.shares;
+      engagement.reach += task.reach;
     });
-    engagement.totalSalesAttributed += normalizeNumber(
-      advocacyProgram.total_sales_attributed
-    );
+    engagement.totalSalesAttributed += advocacyProgram.total_sales_attributed;
   });
 
   res.json(engagement);

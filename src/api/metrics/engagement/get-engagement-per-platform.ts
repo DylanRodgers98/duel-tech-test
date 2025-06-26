@@ -42,28 +42,16 @@ export const getEngagementPerPlatform = async (
       totalSalesAttributed: 0,
     };
 
-    const normalizeNumber = (num: number | string | null): number => {
-      if (num === null) {
-        return 0;
-      }
-      const normalized = Number(num);
-      if (Number.isNaN(normalized)) {
-        return 0;
-      }
-      return normalized;
-    };
-
     results.forEach((result) => {
       result.advocacy_programs.forEach((advocacyProgram) => {
         advocacyProgram.tasks_completed.forEach((task) => {
-          engagementForPlatform.likes += normalizeNumber(task.likes);
-          engagementForPlatform.comments += normalizeNumber(task.comments);
-          engagementForPlatform.shares += normalizeNumber(task.shares);
-          engagementForPlatform.reach += normalizeNumber(task.reach);
+          engagementForPlatform.likes += task.likes;
+          engagementForPlatform.comments += task.comments;
+          engagementForPlatform.shares += task.shares;
+          engagementForPlatform.reach += task.reach;
         });
-        engagementForPlatform.totalSalesAttributed += normalizeNumber(
-          advocacyProgram.total_sales_attributed
-        );
+        engagementForPlatform.totalSalesAttributed +=
+          advocacyProgram.total_sales_attributed;
       });
     });
 
